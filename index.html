@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Millwright — Custom apps, workflows, and AI agents built around your business</title>
+<meta name="description" content="Millwright builds custom internal apps, automated workflows, and AI agents around the way your team actually works. Book a discovery call.">
+<link rel="canonical" href="https://melaniesigrid.github.io/millwright/">
+<meta name="theme-color" content="#0A1428">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Millwright — Custom apps, workflows, and AI agents built around your business">
+<meta property="og:description" content="We turn repetitive work into custom software systems that capture data, move tasks, draft responses, and keep your team out of manual busywork.">
+<meta property="og:url" content="https://melaniesigrid.github.io/millwright/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Millwright — Custom apps, workflows, and AI agents built around your business">
+<meta name="twitter:description" content="We turn repetitive work into custom software systems that capture data, move tasks, draft responses, and keep your team out of manual busywork.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A1428'/%3E%3Cpath d='M9 22V10l7 8 7-8v12' stroke='%23EAF0FA' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='16' cy='18' r='1.8' fill='%232E5BFF'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A1428;
+  --ink-2:#0E1B33;
+  --ink-3:#14264A;
+  --line-dark:rgba(151,178,231,.16);
+  --paper:#F7F9FC;
+  --card:#FFFFFF;
+  --line-light:#DDE5F0;
+  --text-dark:#16233D;
+  --text-mute:#5A6A85;
+  --text-inv:#EAF0FA;
+  --text-inv-mute:#8FA2C4;
+  --volt:#2E5BFF;
+  --volt-soft:rgba(46,91,255,.12);
+  --volt-line:rgba(96,140,255,.55);
+  --jade:#25B98A;
+  --jade-soft:rgba(37,185,138,.14);
+  --radius:14px;
+  --radius-sm:9px;
+  --wrap:1120px;
+  --font-display:"Bricolage Grotesque",Georgia,serif;
+  --font-body:"Instrument Sans",-apple-system,sans-serif;
+  --font-mono:"Spline Sans Mono","SF Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  color:var(--text-dark);
+  background:var(--ink);
+  font-size:16.5px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit}
+::selection{background:var(--volt);color:#fff}
+
+/* ---------- utilities ---------- */
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+.mono{font-family:var(--font-mono)}
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--volt);
+  display:inline-flex;
+  align-items:center;
+  gap:.6em;
+  margin-bottom:1.1rem;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--volt)}
+.dark .eyebrow{color:#7FA3FF}
+.dark .eyebrow::before{background:#7FA3FF}
+h1,h2,h3{font-family:var(--font-display);line-height:1.08;letter-spacing:-.015em;text-wrap:balance}
+h2{font-size:clamp(1.75rem,4.4vw,2.6rem);font-weight:700}
+.lede{font-size:clamp(1rem,2.2vw,1.15rem);color:var(--text-mute);max-width:56ch;margin-top:1rem}
+.dark{background:var(--ink);color:var(--text-inv)}
+.dark .lede{color:var(--text-inv-mute)}
+.light{background:var(--paper)}
+section{padding:clamp(4rem,9vw,6.5rem) 0}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.55em;
+  font-family:var(--font-body);font-weight:600;font-size:.95rem;
+  padding:.85em 1.5em;border-radius:999px;text-decoration:none;
+  border:1px solid transparent;cursor:pointer;
+  transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease;
+}
+.btn-primary{background:var(--volt);color:#fff;box-shadow:0 8px 24px rgba(46,91,255,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(46,91,255,.45)}
+.btn-primary .arrow{transition:transform .18s ease}
+.btn-primary:hover .arrow{transform:translateX(3px)}
+.btn-ghost{border-color:var(--line-dark);color:var(--text-inv)}
+.btn-ghost:hover{border-color:var(--volt-line);background:rgba(46,91,255,.08)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--volt);outline-offset:3px;border-radius:6px}
+
+/* ---------- ticket chip motif ---------- */
+.ticket{
+  font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;
+  display:inline-flex;align-items:center;gap:.55em;
+  padding:.35em .8em;border-radius:999px;
+  border:1px solid var(--line-dark);color:var(--text-inv-mute);
+  background:rgba(255,255,255,.03);
+}
+.ticket .dot{width:6px;height:6px;border-radius:50%;background:var(--jade);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(10,20,40,.82);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line-dark);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:.6em;text-decoration:none;color:var(--text-inv)}
+.logo-mark{width:30px;height:30px;flex:none}
+.logo-name{font-family:var(--font-display);font-weight:700;font-size:1.15rem;letter-spacing:-.01em}
+.nav-links{display:none;gap:1.8rem;list-style:none}
+.nav-links a{text-decoration:none;font-size:.92rem;color:var(--text-inv-mute);transition:color .15s}
+.nav-links a:hover{color:var(--text-inv)}
+.nav-cta{display:none}
+.nav .btn-primary{padding:.6em 1.2em;font-size:.88rem;box-shadow:none}
+@media(min-width:860px){
+  .nav-links{display:flex}
+  .nav-cta{display:inline-flex}
+}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;overflow:hidden;
+  padding:clamp(3.5rem,8vw,6rem) 0 clamp(3rem,7vw,5rem);
+}
+.hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(60% 45% at 75% 10%,rgba(46,91,255,.16),transparent 65%),
+    radial-gradient(45% 40% at 15% 85%,rgba(46,91,255,.08),transparent 60%);
+}
+.hero-grid-bg{
+  position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--line-dark) 1px,transparent 1px),linear-gradient(90deg,var(--line-dark) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(70% 65% at 50% 35%,#000 30%,transparent 100%);
+  -webkit-mask-image:radial-gradient(70% 65% at 50% 35%,#000 30%,transparent 100%);
+}
+.hero-inner{position:relative;display:grid;gap:3rem}
+.hero h1{
+  font-size:clamp(2.3rem,6vw,3.7rem);font-weight:800;
+  max-width:15ch;
+}
+.hero h1 em{font-style:normal;color:transparent;background:linear-gradient(100deg,#6E96FF,#2E5BFF);-webkit-background-clip:text;background-clip:text}
+.hero .lede{max-width:52ch}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:1.8rem}
+.hero-ticket{margin-bottom:1.4rem}
+.fade-up{opacity:0;transform:translateY(18px);animation:fadeUp .7s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+.d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.28s}.d4{animation-delay:.4s}.d5{animation-delay:.55s}
+
+/* ---------- hero workflow map ---------- */
+.flowmap{
+  position:relative;
+  border:1px solid var(--line-dark);
+  border-radius:var(--radius);
+  background:linear-gradient(180deg,rgba(20,38,74,.55),rgba(14,27,51,.85));
+  padding:1.1rem;
+  box-shadow:0 30px 80px rgba(3,8,20,.55);
+}
+.flowmap-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.2rem .3rem .9rem;border-bottom:1px solid var(--line-dark);margin-bottom:1rem;
+}
+.flowmap-head .mono{font-size:.68rem;letter-spacing:.1em;color:var(--text-inv-mute)}
+.flow-svg{width:100%;height:auto}
+.flow-svg text{font-family:var(--font-mono)}
+.flow-line{fill:none;stroke:var(--volt-line);stroke-width:1.4;stroke-dasharray:5 6;animation:flow 1.4s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-11}}
+.node-box{fill:#101F3D;stroke:rgba(151,178,231,.28);stroke-width:1;rx:8}
+.node-box.agent{stroke:var(--volt-line)}
+.node-label{fill:#C9D7F2;font-size:9.5px;font-weight:500}
+.node-sub{fill:#7B8FB5;font-size:7.5px}
+.node-tag{fill:#7FA3FF;font-size:7px;letter-spacing:.08em}
+.node-jade{fill:var(--jade)}
+.blink{animation:pulse 2s ease-in-out infinite}
+
+/* ---------- problem ---------- */
+.problem-grid{display:grid;gap:.9rem;margin-top:2.4rem}
+.problem-row{
+  display:flex;gap:1rem;align-items:flex-start;
+  border:1px solid var(--line-dark);border-radius:var(--radius-sm);
+  padding:1.1rem 1.25rem;background:rgba(255,255,255,.025);
+  transition:border-color .2s,background .2s;
+}
+.problem-row:hover{border-color:var(--volt-line);background:rgba(46,91,255,.05)}
+.problem-row .x{
+  font-family:var(--font-mono);flex:none;color:#E06A6A;font-size:.85rem;
+  width:1.6em;height:1.6em;border:1px solid rgba(224,106,106,.4);border-radius:6px;
+  display:grid;place-items:center;margin-top:.1em;
+}
+.problem-row p{color:var(--text-inv-mute);font-size:.98rem}
+.problem-row strong{color:var(--text-inv);font-weight:600}
+@media(min-width:760px){.problem-grid{grid-template-columns:1fr 1fr}.problem-row:last-child{grid-column:1/-1}}
+
+/* ---------- outcome cards ---------- */
+.card-grid{display:grid;gap:1.1rem;margin-top:2.6rem}
+@media(min-width:640px){.card-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.card-grid.four{grid-template-columns:repeat(4,1fr)}}
+.o-card{
+  background:var(--card);border:1px solid var(--line-light);border-radius:var(--radius);
+  padding:1.6rem 1.4rem;position:relative;overflow:hidden;
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+}
+.o-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(22,35,61,.1);border-color:#BFD0EC}
+.o-card::after{
+  content:"";position:absolute;left:0;top:0;height:3px;width:0;
+  background:var(--volt);transition:width .35s ease;
+}
+.o-card:hover::after{width:100%}
+.o-icon{
+  width:42px;height:42px;border-radius:10px;background:var(--volt-soft);
+  display:grid;place-items:center;margin-bottom:1.1rem;color:var(--volt);
+}
+.o-card h3{font-size:1.08rem;font-weight:700;margin-bottom:.5rem}
+.o-card p{font-size:.93rem;color:var(--text-mute)}
+
+/* ---------- how it works ---------- */
+.steps{display:grid;gap:0;margin-top:2.6rem;position:relative}
+.step{
+  display:grid;grid-template-columns:auto 1fr;gap:1.3rem;
+  padding:1.6rem 0;border-top:1px solid var(--line-light);
+}
+.step:last-child{border-bottom:1px solid var(--line-light)}
+.step-no{
+  font-family:var(--font-mono);color:var(--volt);font-size:.8rem;font-weight:600;
+  width:52px;height:52px;border:1px solid var(--line-light);border-radius:12px;
+  display:grid;place-items:center;background:var(--card);flex:none;
+  transition:background .2s,color .2s,border-color .2s;
+}
+.step:hover .step-no{background:var(--volt);color:#fff;border-color:var(--volt)}
+.step h3{font-size:1.15rem;font-weight:700;margin-bottom:.35rem}
+.step p{color:var(--text-mute);font-size:.96rem;max-width:62ch}
+.step .mono-tag{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;color:var(--text-mute);text-transform:uppercase;margin-bottom:.3rem;display:block}
+
+/* ---------- what we build ---------- */
+.build-grid{display:grid;gap:1rem;margin-top:2.6rem}
+@media(min-width:640px){.build-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.build-grid{grid-template-columns:repeat(4,1fr)}}
+.b-card{
+  border:1px solid var(--line-dark);border-radius:var(--radius-sm);
+  padding:1.35rem 1.25rem;background:rgba(255,255,255,.03);
+  transition:border-color .2s,background .2s,transform .2s;
+}
+.b-card:hover{border-color:var(--volt-line);background:rgba(46,91,255,.07);transform:translateY(-3px)}
+.b-card .mono{font-size:.64rem;letter-spacing:.1em;color:#7FA3FF;display:block;margin-bottom:.6rem}
+.b-card h3{font-size:1rem;font-weight:600;color:var(--text-inv);margin-bottom:.35rem}
+.b-card p{font-size:.86rem;color:var(--text-inv-mute)}
+
+/* ---------- before / after ---------- */
+.ba-grid{display:grid;gap:1.2rem;margin-top:2.6rem}
+@media(min-width:860px){.ba-grid{grid-template-columns:1fr 1fr}}
+.ba-panel{border-radius:var(--radius);padding:2rem 1.7rem;position:relative}
+.ba-panel .tag{
+  font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  display:inline-block;padding:.35em .9em;border-radius:999px;margin-bottom:1.2rem;
+}
+.ba-before{background:var(--card);border:1px dashed #C6CFDE}
+.ba-before .tag{background:#EEF1F6;color:#7A8699}
+.ba-before p{color:var(--text-mute)}
+.ba-after{background:var(--ink);border:1px solid var(--volt-line);color:var(--text-inv);box-shadow:0 20px 50px rgba(10,20,40,.25)}
+.ba-after .tag{background:var(--volt);color:#fff}
+.ba-after p{color:var(--text-inv-mute)}
+.ba-panel h3{font-family:var(--font-display);font-size:1.25rem;font-weight:700;margin-bottom:.7rem;line-height:1.3}
+.ba-list{list-style:none;margin-top:1.2rem;display:grid;gap:.55rem}
+.ba-list li{display:flex;gap:.7em;align-items:flex-start;font-size:.92rem}
+.ba-before .ba-list li{color:var(--text-mute)}
+.ba-after .ba-list li{color:var(--text-inv-mute)}
+.ba-list .mk{font-family:var(--font-mono);flex:none;margin-top:.1em;font-size:.8rem}
+.ba-before .mk{color:#B84C4C}
+.ba-after .mk{color:var(--jade)}
+
+/* ---------- engagement examples ---------- */
+.ex-grid{display:grid;gap:1rem;margin-top:2.6rem}
+@media(min-width:640px){.ex-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1000px){.ex-grid{grid-template-columns:repeat(3,1fr)}}
+.ex-card{
+  background:var(--card);border:1px solid var(--line-light);border-radius:var(--radius);
+  padding:1.4rem;display:flex;flex-direction:column;gap:.7rem;
+  transition:transform .2s,box-shadow .2s;
+}
+.ex-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(22,35,61,.1)}
+.ex-run{
+  font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;
+  display:flex;align-items:center;gap:.5em;color:var(--text-mute);
+}
+.ex-run .dot{width:6px;height:6px;border-radius:50%;background:var(--jade)}
+.ex-card h3{font-size:1.02rem;font-weight:700;line-height:1.35}
+.ex-card p{font-size:.9rem;color:var(--text-mute)}
+.ex-io{
+  margin-top:auto;padding-top:.9rem;border-top:1px solid var(--line-light);
+  font-family:var(--font-mono);font-size:.68rem;color:var(--text-mute);
+  display:flex;align-items:center;gap:.6em;flex-wrap:wrap;
+}
+.ex-io .io-arrow{color:var(--volt)}
+
+/* ---------- included ---------- */
+.inc-wrap{
+  margin-top:2.6rem;border:1px solid var(--line-dark);border-radius:var(--radius);
+  background:rgba(255,255,255,.03);padding:2rem 1.6rem;
+}
+.inc-grid{display:grid;gap:.85rem}
+@media(min-width:700px){.inc-grid{grid-template-columns:1fr 1fr}}
+.inc-item{display:flex;gap:.8em;align-items:flex-start;font-size:.96rem;color:var(--text-inv-mute)}
+.inc-item .mk{
+  font-family:var(--font-mono);flex:none;color:var(--jade);font-size:.8rem;
+  width:1.5em;height:1.5em;border:1px solid rgba(37,185,138,.4);border-radius:6px;
+  display:grid;place-items:center;margin-top:.15em;background:var(--jade-soft);
+}
+.inc-item strong{color:var(--text-inv);font-weight:600}
+
+/* ---------- CTA band ---------- */
+.cta-band{
+  position:relative;overflow:hidden;text-align:center;
+  padding:clamp(4.5rem,10vw,7rem) 0;
+}
+.cta-band::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(55% 70% at 50% 100%,rgba(46,91,255,.25),transparent 70%);
+  pointer-events:none;
+}
+.cta-band h2{font-size:clamp(1.9rem,5vw,3rem);font-weight:800;max-width:18ch;margin:0 auto}
+.cta-band .lede{margin:1.1rem auto 0}
+.cta-band .btn{margin-top:2rem}
+.cta-actions{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center}
+.cta-micro{font-family:var(--font-mono);font-size:.72rem;color:var(--text-inv-mute);margin-top:1.3rem;letter-spacing:.02em}
+
+/* ---------- FAQ ---------- */
+.faq-list{margin-top:2.4rem;display:grid;gap:.8rem;max-width:780px}
+.faq-item{
+  background:var(--card);border:1px solid var(--line-light);border-radius:var(--radius-sm);
+  overflow:hidden;transition:border-color .2s;
+}
+.faq-item[open]{border-color:var(--volt-line)}
+.faq-item summary{
+  list-style:none;cursor:pointer;padding:1.15rem 1.3rem;
+  font-weight:600;font-size:.98rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary .pl{
+  font-family:var(--font-mono);color:var(--volt);flex:none;font-size:1.05rem;
+  transition:transform .25s ease;line-height:1;
+}
+.faq-item[open] summary .pl{transform:rotate(45deg)}
+.faq-item .faq-body{padding:0 1.3rem 1.2rem;color:var(--text-mute);font-size:.93rem;max-width:64ch}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line-dark);padding:2.4rem 0;background:var(--ink)}
+.foot-inner{display:flex;flex-wrap:wrap;gap:1.4rem;align-items:center;justify-content:space-between}
+.foot-inner .mono{font-size:.7rem;color:var(--text-inv-mute);letter-spacing:.06em}
+.foot-links{display:flex;gap:1.4rem;list-style:none}
+.foot-links a{text-decoration:none;font-size:.86rem;color:var(--text-inv-mute)}
+.foot-links a:hover{color:var(--text-inv)}
+.foot-credit{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--line-dark);text-align:center}
+.foot-credit a{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;color:var(--text-inv-mute);
+  display:inline-flex;align-items:center;gap:.5em;transition:color .18s ease;
+}
+.foot-credit a strong{color:var(--text-inv);font-weight:600}
+.foot-credit a:hover{color:var(--text-inv)}
+.foot-credit .arrow{color:var(--volt);transition:transform .18s ease}
+.foot-credit a:hover .arrow{transform:translateX(3px)}
+
+/* ---------- scroll reveal ---------- */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.rd-1{transition-delay:.06s}.rd-2{transition-delay:.12s}.rd-3{transition-delay:.18s}.rd-4{transition-delay:.24s}
+.rd-5{transition-delay:.3s}.rd-6{transition-delay:.36s}.rd-7{transition-delay:.42s}.rd-8{transition-delay:.48s}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .fade-up,.reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="#top" aria-label="Millwright home">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="29" height="29" rx="7" stroke="#2E5BFF" stroke-width="2"/>
+        <path d="M9 22V10l7 8 7-8v12" stroke="#EAF0FA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="18" r="1.8" fill="#2E5BFF"/>
+      </svg>
+      <span class="logo-name">Millwright</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#what-we-build">What we build</a></li>
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a class="btn btn-primary nav-cta" href="https://cal.com/northboundsoftwarestudio/scope-call" target="_blank" rel="noopener">Book a discovery call</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero dark" id="top">
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+  <div class="wrap hero-inner">
+    <div>
+      <span class="ticket hero-ticket fade-up d1"><span class="dot"></span>MILLWRIGHT · CUSTOM SYSTEMS STUDIO</span>
+      <h1 class="fade-up d2">Custom apps, workflows, and <em>AI agents</em> built around your business.</h1>
+      <p class="lede fade-up d3">We turn repetitive work into custom software systems that capture data, move tasks, draft responses, update records, and keep your team out of manual busywork.</p>
+      <div class="hero-ctas fade-up d4">
+        <a class="btn btn-primary" href="https://cal.com/northboundsoftwarestudio/scope-call" target="_blank" rel="noopener">Book a discovery call <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="#what-we-build">See what we build</a>
+      </div>
+    </div>
+
+    <!-- Signature: live workflow map -->
+    <div class="flowmap fade-up d5" role="img" aria-label="Diagram of a Millwright workflow: a new enquiry form feeds a database record, an AI agent drafts a reply, a task is routed to the team, and the status updates to done.">
+      <div class="flowmap-head">
+        <span class="mono">WORKFLOW · LEAD-INTAKE-01</span>
+        <span class="ticket"><span class="dot"></span>RUNNING</span>
+      </div>
+      <svg class="flow-svg" viewBox="0 0 560 300" aria-hidden="true">
+        <!-- connectors -->
+        <path class="flow-line" d="M150 60 H200 Q214 60 214 74 V96"/>
+        <path class="flow-line" d="M214 176 V198 Q214 212 228 212 H262"/>
+        <path class="flow-line" d="M262 136 H310 Q324 136 324 122 V96 Q324 82 338 82 H392" style="animation-delay:.4s"/>
+        <path class="flow-line" d="M406 236 H440 Q454 236 454 222 V196" style="animation-delay:.7s"/>
+        <path class="flow-line" d="M300 250 H360" style="animation-delay:.9s"/>
+
+        <!-- Node: intake form -->
+        <g>
+          <rect class="node-box" x="20" y="24" width="130" height="72" rx="8"/>
+          <text class="node-tag" x="34" y="44">FORM</text>
+          <text class="node-label" x="34" y="62">New enquiry</text>
+          <rect x="34" y="72" width="80" height="5" rx="2.5" fill="#22385F"/>
+          <rect x="34" y="82" width="58" height="5" rx="2.5" fill="#22385F"/>
+        </g>
+
+        <!-- Node: database record -->
+        <g>
+          <rect class="node-box" x="152" y="96" width="124" height="80" rx="8"/>
+          <text class="node-tag" x="166" y="116">RECORD</text>
+          <text class="node-label" x="166" y="134">Client #1042</text>
+          <text class="node-sub" x="166" y="150">status: new → qualified</text>
+          <circle class="node-jade blink" cx="262" cy="112" r="3.5"/>
+        </g>
+
+        <!-- Node: AI agent -->
+        <g>
+          <rect class="node-box agent" x="262" y="188" width="144" height="88" rx="8"/>
+          <text class="node-tag" x="276" y="208">AI AGENT</text>
+          <text class="node-label" x="276" y="226">Draft first reply</text>
+          <rect x="276" y="236" width="112" height="4.5" rx="2.25" fill="#2A4A8F"/>
+          <rect x="276" y="245" width="96" height="4.5" rx="2.25" fill="#2A4A8F"/>
+          <rect x="276" y="254" width="104" height="4.5" rx="2.25" fill="#2A4A8F"/>
+          <text class="node-sub" x="276" y="270">awaiting human approval</text>
+        </g>
+
+        <!-- Node: email draft -->
+        <g>
+          <rect class="node-box" x="392" y="44" width="148" height="76" rx="8"/>
+          <text class="node-tag" x="406" y="64">EMAIL DRAFT</text>
+          <text class="node-label" x="406" y="82">Re: Your enquiry</text>
+          <rect x="406" y="92" width="118" height="4.5" rx="2.25" fill="#22385F"/>
+          <rect x="406" y="101" width="86" height="4.5" rx="2.25" fill="#22385F"/>
+        </g>
+
+        <!-- Node: task routed -->
+        <g>
+          <rect class="node-box" x="406" y="196" width="134" height="80" rx="8"/>
+          <text class="node-tag" x="420" y="216">TASK</text>
+          <text class="node-label" x="420" y="234">Follow up · Sam</text>
+          <text class="node-sub" x="420" y="250">due tomorrow 10:00</text>
+          <rect x="420" y="258" width="46" height="12" rx="6" fill="rgba(37,185,138,.18)"/>
+          <text x="428" y="267" fill="#25B98A" font-size="7" font-family="var(--font-mono)">ROUTED</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section class="dark" style="padding-top:0">
+  <div class="wrap">
+    <span class="eyebrow reveal">The problem</span>
+    <h2 class="reveal rd-1">Your business is held together by tabs, spreadsheets, and memory.</h2>
+    <p class="lede reveal rd-2">Most teams don't have a software problem. They have a "nothing talks to anything" problem — and people are the glue.</p>
+    <div class="problem-grid">
+      <div class="problem-row reveal rd-1"><span class="x">✕</span><p><strong>Staff copy data between tools by hand.</strong> The same customer detail gets typed into three systems, and one of them is always out of date.</p></div>
+      <div class="problem-row reveal rd-2"><span class="x">✕</span><p><strong>Requests arrive in too many places.</strong> Email, phone, DMs, forms, walk-ins — and someone has to notice each one.</p></div>
+      <div class="problem-row reveal rd-3"><span class="x">✕</span><p><strong>Follow-up depends on someone remembering.</strong> When they're busy or away, things quietly fall through.</p></div>
+      <div class="problem-row reveal rd-4"><span class="x">✕</span><p><strong>Reporting takes hours.</strong> The numbers exist, but they're scattered across exports, inboxes, and someone's personal spreadsheet.</p></div>
+      <div class="problem-row reveal rd-5"><span class="x">✕</span><p><strong>Off-the-shelf software never matches the real process.</strong> So the team works around it — back into spreadsheets, back into memory.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OUTCOME ============ -->
+<section class="light">
+  <div class="wrap">
+    <span class="eyebrow reveal">The outcome</span>
+    <h2 class="reveal rd-1">Software that fits the way your team actually works.</h2>
+    <p class="lede reveal rd-2">We don't sell a platform. We build the specific system your process needs, then connect it to the tools you already use.</p>
+    <div class="card-grid four">
+      <div class="o-card reveal rd-1">
+        <div class="o-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2.5" y="2.5" width="15" height="15" rx="3"/><path d="M2.5 7.5h15M7.5 7.5v10"/></svg></div>
+        <h3>Custom internal apps</h3>
+        <p>Purpose-built screens for your workflow — intake, scheduling, tracking — instead of forcing your process into someone else's product.</p>
+      </div>
+      <div class="o-card reveal rd-2">
+        <div class="o-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 6h6l2 3h6M3 14h6l2-3"/><circle cx="17" cy="14" r="1.5"/></svg></div>
+        <h3>Automated handoffs</h3>
+        <p>When something happens in one tool, the next step starts in another — no copying, no "did you see my email?"</p>
+      </div>
+      <div class="o-card reveal rd-3">
+        <div class="o-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M10 2.5v3M10 14.5v3M2.5 10h3M14.5 10h3"/><circle cx="10" cy="10" r="3.5"/></svg></div>
+        <h3>AI agents on the busywork</h3>
+        <p>Agents that draft, summarize, classify, and route work — always producing a first pass for a human to approve, not acting unsupervised.</p>
+      </div>
+      <div class="o-card reveal rd-4">
+        <div class="o-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 16.5V10M8.5 16.5V5M14 16.5V12.5M3 16.5h14"/></svg></div>
+        <h3>Dashboards that show what matters</h3>
+        <p>One view of what's open, what's stuck, and what needs a person today — instead of a Monday-morning spreadsheet ritual.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="light" id="how-it-works" style="padding-top:0">
+  <div class="wrap">
+    <span class="eyebrow reveal">How it works</span>
+    <h2 class="reveal rd-1">From messy process to running system.</h2>
+    <div class="steps">
+      <div class="step reveal rd-1">
+        <div class="step-no">01</div>
+        <div>
+          <span class="mono-tag">Map</span>
+          <h3>Map the process and find the manual bottlenecks</h3>
+          <p>We walk through how work actually moves through your business — not the official version, the real one — and mark every point where a person is doing something a system should.</p>
+        </div>
+      </div>
+      <div class="step reveal rd-2">
+        <div class="step-no">02</div>
+        <div>
+          <span class="mono-tag">Design</span>
+          <h3>Design a simple custom app, workflow, or agent system</h3>
+          <p>You get a plain-English plan of what we'll build and what it will do for your team. Simple wins: the goal is the smallest system that removes the most busywork.</p>
+        </div>
+      </div>
+      <div class="step reveal rd-3">
+        <div class="step-no">03</div>
+        <div>
+          <span class="mono-tag">Build</span>
+          <h3>Build and connect it to the tools you already use</h3>
+          <p>We build the system and wire it into your existing email, calendar, forms, and records where integrations are available — so nobody has to change how they work overnight.</p>
+        </div>
+      </div>
+      <div class="step reveal rd-4">
+        <div class="step-no">04</div>
+        <div>
+          <span class="mono-tag">Tune</span>
+          <h3>Train the team and improve the workflow after real use</h3>
+          <p>We hand it over with a walkthrough, watch how it performs in the first weeks of real work, and adjust. Systems get better after contact with reality — we plan for that.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT WE BUILD ============ -->
+<section class="dark" id="what-we-build">
+  <div class="wrap">
+    <span class="eyebrow reveal">What we build</span>
+    <h2 class="reveal rd-1">Pick a bottleneck. We've probably built the fix.</h2>
+    <div class="build-grid">
+      <div class="b-card reveal rd-1"><span class="mono">BUILD / PORTAL</span><h3>Custom client portals</h3><p>One place where clients submit, track, and approve — instead of email threads.</p></div>
+      <div class="b-card reveal rd-2"><span class="mono">BUILD / INTAKE</span><h3>Lead intake systems</h3><p>Every enquiry captured, qualified, and answered — from every channel.</p></div>
+      <div class="b-card reveal rd-3"><span class="mono">BUILD / DASH</span><h3>Internal dashboards</h3><p>Live views of jobs, pipeline, and blockers pulled from your real data.</p></div>
+      <div class="b-card reveal rd-4"><span class="mono">BUILD / COMMS</span><h3>Automated email &amp; SMS workflows</h3><p>Reminders, confirmations, and follow-ups that send themselves on schedule.</p></div>
+      <div class="b-card reveal rd-5"><span class="mono">AGENT / SUPPORT</span><h3>AI support assistants</h3><p>First-pass answers drafted from your own docs, reviewed by your team.</p></div>
+      <div class="b-card reveal rd-6"><span class="mono">AGENT / RESEARCH</span><h3>AI research &amp; reporting agents</h3><p>Raw data in, readable weekly summaries out — on a schedule you set.</p></div>
+      <div class="b-card reveal rd-7"><span class="mono">BUILD / DOCS</span><h3>Document &amp; proposal generators</h3><p>Form answers become formatted quotes, contracts, and reports in minutes.</p></div>
+      <div class="b-card reveal rd-8"><span class="mono">BUILD / OPS</span><h3>Ops trackers &amp; approval flows</h3><p>Requests move through defined stages with the right person notified at each one.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BEFORE / AFTER ============ -->
+<section class="light">
+  <div class="wrap">
+    <span class="eyebrow reveal">The shift</span>
+    <h2 class="reveal rd-1">Same team. Different machinery.</h2>
+    <div class="ba-grid">
+      <div class="ba-panel ba-before reveal rd-1">
+        <span class="tag">Before</span>
+        <h3>Work lives across inboxes, spreadsheets, notes, and Slack.</h3>
+        <p>The team spends hours moving information around, and nobody is fully sure what's outstanding.</p>
+        <ul class="ba-list">
+          <li><span class="mk">✕</span>Requests scattered across five channels</li>
+          <li><span class="mk">✕</span>Status lives in someone's head</li>
+          <li><span class="mk">✕</span>Every report is a manual assembly job</li>
+        </ul>
+      </div>
+      <div class="ba-panel ba-after reveal rd-2">
+        <span class="tag">After</span>
+        <h3>Requests enter one system, tasks route automatically.</h3>
+        <p>AI drafts the first pass, a person approves it, and the team sees exactly what needs action today.</p>
+        <ul class="ba-list">
+          <li><span class="mk">✓</span>One intake, one source of truth</li>
+          <li><span class="mk">✓</span>Handoffs happen without reminders</li>
+          <li><span class="mk">✓</span>Status and reporting are live, not assembled</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENGAGEMENT EXAMPLES ============ -->
+<section class="light" id="examples" style="padding-top:0">
+  <div class="wrap">
+    <span class="eyebrow reveal">Engagement examples</span>
+    <h2 class="reveal rd-1">The kinds of systems we ship.</h2>
+    <div class="ex-grid">
+      <div class="ex-card reveal rd-1">
+        <div class="ex-run"><span class="dot"></span>RUN 0107</div>
+        <h3>Lead intake app that qualifies enquiries and drafts replies</h3>
+        <p>New enquiries get scored against your criteria, and a tailored reply is drafted for review before anything sends.</p>
+        <div class="ex-io">form <span class="io-arrow">→</span> record <span class="io-arrow">→</span> draft reply</div>
+      </div>
+      <div class="ex-card reveal rd-2">
+        <div class="ex-run"><span class="dot"></span>RUN 0093</div>
+        <h3>Operations dashboard that tracks open jobs and blockers</h3>
+        <p>Every open job, its stage, and its blocker — visible at a glance instead of buried in a status meeting.</p>
+        <div class="ex-io">job data <span class="io-arrow">→</span> live board</div>
+      </div>
+      <div class="ex-card reveal rd-3">
+        <div class="ex-run"><span class="dot"></span>RUN 0118</div>
+        <h3>AI agent that summarizes calls and creates follow-up tasks</h3>
+        <p>Call notes become a clean summary, and every commitment made on the call becomes an assigned task.</p>
+        <div class="ex-io">call notes <span class="io-arrow">→</span> summary <span class="io-arrow">→</span> tasks</div>
+      </div>
+      <div class="ex-card reveal rd-4">
+        <div class="ex-run"><span class="dot"></span>RUN 0084</div>
+        <h3>Proposal generator that turns form answers into a draft quote</h3>
+        <p>A structured intake form produces a formatted, on-brand proposal draft for you to adjust and send.</p>
+        <div class="ex-io">answers <span class="io-arrow">→</span> draft proposal</div>
+      </div>
+      <div class="ex-card reveal rd-5">
+        <div class="ex-run"><span class="dot"></span>RUN 0112</div>
+        <h3>Renewal workflow that reminds customers and updates status</h3>
+        <p>Upcoming renewals trigger timed reminders, and records update automatically as customers respond.</p>
+        <div class="ex-io">due date <span class="io-arrow">→</span> reminders <span class="io-arrow">→</span> status</div>
+      </div>
+      <div class="ex-card reveal rd-6">
+        <div class="ex-run"><span class="dot"></span>RUN 0121</div>
+        <h3>Reporting workflow that turns raw data into weekly summaries</h3>
+        <p>Exports and records roll up into a readable weekly summary, delivered before anyone has to ask for it.</p>
+        <div class="ex-io">raw data <span class="io-arrow">→</span> weekly summary</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT'S INCLUDED ============ -->
+<section class="dark">
+  <div class="wrap">
+    <span class="eyebrow reveal">What's included</span>
+    <h2 class="reveal rd-1">One engagement, end to end.</h2>
+    <p class="lede reveal rd-2">Every build is done-for-you. You bring the process; we bring the system, the setup, and the handoff.</p>
+    <div class="inc-wrap reveal rd-2">
+      <div class="inc-grid">
+        <div class="inc-item"><span class="mk">✓</span><span><strong>Workflow audit</strong> — a mapped view of how work moves today and where it stalls</span></div>
+        <div class="inc-item"><span class="mk">✓</span><span><strong>Custom app or automation build</strong> — the system itself, built for your process</span></div>
+        <div class="inc-item"><span class="mk">✓</span><span><strong>AI agent setup where useful</strong> — only where it genuinely removes work</span></div>
+        <div class="inc-item"><span class="mk">✓</span><span><strong>Database or dashboard views</strong> — your data, organized and visible</span></div>
+        <div class="inc-item"><span class="mk">✓</span><span><strong>Email / SMS / template automation</strong> — messages that send themselves</span></div>
+        <div class="inc-item"><span class="mk">✓</span><span><strong>Tool integrations when available</strong> — connected to what you already use</span></div>
+        <div class="inc-item"><span class="mk">✓</span><span><strong>Team handoff and walkthrough</strong> — your team runs it without us</span></div>
+        <div class="inc-item"><span class="mk">✓</span><span><strong>Post-launch improvement pass</strong> — tuned after real-world use</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="dark cta-band" id="book">
+  <div class="wrap">
+    <h2 class="reveal">Stop forcing your business into generic software.</h2>
+    <p class="lede reveal rd-1" style="margin-left:auto;margin-right:auto">Tell us how the work actually happens. We'll show you the system that should be doing it.</p>
+    <div class="cta-actions reveal rd-2">
+      <a class="btn btn-primary" href="https://cal.com/northboundsoftwarestudio/scope-call" target="_blank" rel="noopener">Book a discovery call <span class="arrow">→</span></a>
+      <a class="btn btn-ghost" href="mailto:hello@northboundsoftwarestudio.com?subject=Millwright%20discovery%20call">hello@northboundsoftwarestudio.com</a>
+    </div>
+    <p class="cta-micro reveal rd-3">Bring one messy workflow. We'll show you what can be automated, built, or simplified.</p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="light" id="faq">
+  <div class="wrap">
+    <span class="eyebrow reveal">FAQ</span>
+    <h2 class="reveal rd-1">Sensible questions, straight answers.</h2>
+    <div class="faq-list">
+      <details class="faq-item reveal rd-1">
+        <summary>Do we need technical knowledge?<span class="pl">+</span></summary>
+        <div class="faq-body">No. You need to know your own process — that's it. We handle the technical side, and everything we hand over is built so a non-technical team can run it day to day.</div>
+      </details>
+      <details class="faq-item reveal rd-2">
+        <summary>Can this connect to our existing tools?<span class="pl">+</span></summary>
+        <div class="faq-body">Usually, yes. Most modern tools — email, calendars, forms, spreadsheets, CRMs, accounting software — offer integrations we can build against. During the workflow audit we confirm exactly what your tools support before we commit to a design.</div>
+      </details>
+      <details class="faq-item reveal rd-3">
+        <summary>Do you build custom apps or only automations?<span class="pl">+</span></summary>
+        <div class="faq-body">Both. Some problems are solved by connecting the tools you already have; others need a small custom app with its own screens and database. We recommend whichever is simpler to run — not whichever is bigger to build.</div>
+      </details>
+      <details class="faq-item reveal rd-4">
+        <summary>Can AI agents review and draft work before humans approve it?<span class="pl">+</span></summary>
+        <div class="faq-body">Yes — and that's our default design. Agents draft replies, summaries, and classifications as a first pass, and a person approves before anything is sent or finalized. Nothing customer-facing goes out without human sign-off unless you explicitly choose otherwise.</div>
+      </details>
+      <details class="faq-item reveal rd-5">
+        <summary>How long does a typical build take?<span class="pl">+</span></summary>
+        <div class="faq-body">It depends on scope, which is why we start with the audit. A focused automation is typically a matter of weeks; a custom app with several connected workflows takes longer. After the audit you get a concrete timeline for your specific build — we don't quote before we've seen the process.</div>
+      </details>
+      <details class="faq-item reveal rd-6">
+        <summary>What should we automate first?<span class="pl">+</span></summary>
+        <div class="faq-body">The task that is frequent, repetitive, and rule-based — the one someone does every day while thinking "a machine should do this." That's usually intake, follow-up, or reporting. Bring it to the discovery call and we'll map it together.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap foot-inner">
+    <a class="logo" href="#top" aria-label="Millwright home">
+      <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true" style="width:24px;height:24px">
+        <rect x="1.5" y="1.5" width="29" height="29" rx="7" stroke="#2E5BFF" stroke-width="2"/>
+        <path d="M9 22V10l7 8 7-8v12" stroke="#EAF0FA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="16" cy="18" r="1.8" fill="#2E5BFF"/>
+      </svg>
+      <span class="logo-name" style="font-size:1rem">Millwright</span>
+    </a>
+    <ul class="foot-links">
+      <li><a href="#what-we-build">What we build</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="mailto:hello@northboundsoftwarestudio.com?subject=Millwright%20enquiry">hello@northboundsoftwarestudio.com</a></li>
+      <li><a href="https://cal.com/northboundsoftwarestudio/scope-call" target="_blank" rel="noopener">Book a call</a></li>
+    </ul>
+    <span class="mono">© 2026 MILLWRIGHT · SYSTEMS BUILT AROUND THE WORK</span>
+  </div>
+  <div class="wrap foot-credit">
+    <a href="https://northboundsoftwarestudio.com" target="_blank" rel="noopener">
+      Made by <strong>Northbound Software Studio</strong> <span class="arrow">→</span>
+    </a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.reveal');
+  if(reduce || !('IntersectionObserver' in window)){
+    items.forEach(function(el){el.classList.add('in')});
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+    });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  items.forEach(function(el){io.observe(el)});
+})();
+</script>
+</body>
+</html>
