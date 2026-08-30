@@ -14,6 +14,8 @@ A single self-contained static page. No build step, no dependencies, no framewor
 
 ```
 index.html    The entire site — markup, styles, and scripts inline
+PROSPECTS.md  Five named buyers, with evidence (Discovery: disc.named-buyer)
+TODOS.md      Where the project stands and what is next
 ```
 
 Fonts (Bricolage Grotesque, Instrument Sans, Spline Sans Mono) load from Google Fonts. Everything else — the logo, the workflow diagram, the icons — is inline SVG.
